@@ -1,0 +1,32 @@
+flowchart TD
+
+subgraph CORE["Autonomous Driving Core (Supervised System)"]
+
+    SUP["System Supervisor"]
+
+    PER["Perception Module"]
+    MAP["Mapping Module"]
+    PLAN["Motion Planning Module"]
+
+    CTRL["LocalTrajectoryTracker (C++ / Eigen)"]
+    KIN["Kinematic Calculator"]
+
+    IN["Sensor Interface Input"]
+
+    %% normal pipeline
+    IN --> PER --> MAP --> PLAN --> CTRL --> KIN --> CTRL
+
+    %% supervision monitoring
+    SUP --> PER
+    SUP --> MAP
+    SUP --> PLAN
+    SUP --> CTRL
+
+    PER --> SUP
+    MAP --> SUP
+    PLAN --> SUP
+    CTRL --> SUP
+
+    %% 🔥 NEW: safety override / return to control authority
+    SUP -->|Safety Override / Takeover| CTRL
+end

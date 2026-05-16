@@ -1,0 +1,68 @@
+flowchart TD
+
+%% =======================
+%% FASTAPI ROOT
+%% =======================
+API_ROOT["FastAPI Telemetry Gateway (Data & Analytics Hub)"]
+
+%% =======================
+%% CORE MODULES
+%% =======================
+DASH["1. Web Dashboard Module<br>(Frontend Visualization)"]
+LOG_ENG["2. Log Ingestion & Storage Engine"]
+STAT_ANALYSER["3. Statistical Error Analyzer<br>(Advanced Verification Metrics)"]
+
+API_ROOT --> DASH
+API_ROOT --> LOG_ENG
+API_ROOT --> STAT_ANALYSER
+
+%% =======================
+%% DASHBOARD SUBGRAPH
+%% =======================
+subgraph DASH_MODULE["Real-Time Web Dashboard"]
+    LIVE_V["Live Stream View<br>(WebSockets)"]
+    STAT_G["Dynamic Charts<br>(Error Plots & System Frequencies)"]
+    WARN_P["Active Warnings & Intervention Panel"]
+    
+    LIVE_V & STAT_G & WARN_P --> UI_OUT["User Interface Render"]
+end
+DASH --> DASH_MODULE
+
+%% =======================
+%% LOG ENGINE SUBGRAPH
+%% =======================
+subgraph LOG_MODULE["Log Management & Ingestion"]
+    IN_STREAM["POST /api/v1/telemetry/log<br>(JSON Stream from Supervisor)"]
+    PARSER["Structured JSON Validator<br>(Pydantic Schema)"]
+    DB_STORE["Local Append-Only Storage<br>(Structured CSV / JSON Logs)"]
+    
+    IN_STREAM --> PARSER --> DB_STORE
+end
+LOG_ENG --> LOG_MODULE
+
+%% =======================
+%% STATISTICAL ANALYZER SUBGRAPH
+%% =======================
+subgraph ANALYTICS_MODULE["Statistical Diagnostic Engine (Expert Mode)"]
+    E_DIST["Error Distribution Profiler<br>(Mean, Variance, RMSE Calculation)"]
+    TREND["Anomaly Detection<br>(Detects Drift & Spike Faults)"]
+    QA_METRICS["Verification Report Generator<br>(ISTQB Testing Base Metrics)"]
+    
+    DB_STORE -->|Historical Data| E_DIST & TREND --> QA_METRICS
+end
+STAT_ANALYSER --> ANALYTICS_MODULE
+
+%% =======================
+%% SYSTEM INTERFACES
+%% =======================
+SUP_SYS["System Supervisor (Internal Network)"] -->|Asynchronous Uploads| IN_STREAM
+QA_METRICS -->|Export Testing Insights| DASH_MODULE
+
+%% Styling
+classDef root fill:#f8f9fa,stroke:#333,stroke-width:2px;
+classDef module fill:#e8f4ff,stroke:#1f77b4,stroke-width:1px;
+classDef expert fill:#fff3cd,stroke:#ff9800,stroke-width:1px;
+
+class API_ROOT root;
+class DASH_MODULE,LOG_MODULE module;
+class ANALYTICS_MODULE expert;

@@ -1,0 +1,74 @@
+flowchart TD
+
+%% =======================
+%% TELEMETRY
+%% =======================
+subgraph TEL["Telemetry"]
+
+UI["Web UI"] --> API["FastAPI"] --> LOG["Logger"]
+
+end
+
+%% =======================
+%% SENSING + VEHICLE
+%% =======================
+subgraph SEN["Sensing"]
+
+SENS["Sensors"] --> CAR["Vehicle 🚗"]
+
+end
+
+%% =======================
+%% CORE
+%% =======================
+subgraph CORE["Autonomous Core"]
+
+SUP["Supervisor"]
+
+PER["Perception"] --> MAP["Mapping"] --> PLAN["Planning"] --> CTRL["Control"] --> KIN["Kinematics"] --> CTRL
+
+SUP --> PER
+SUP --> MAP
+SUP --> PLAN
+SUP --> CTRL
+
+PER --> SUP
+MAP --> SUP
+PLAN --> SUP
+CTRL --> SUP
+
+SUP -->|Override| CTRL
+
+end
+
+%% =======================
+%% DIGITAL TWIN
+%% =======================
+subgraph DT["Digital Twin"]
+
+DT_STATE["State Model"]
+DT_ENV["Environment Model"]
+DT_SYNC["Synchronization Engine"]
+
+DT_STATE --> DT_SYNC
+DT_ENV --> DT_SYNC
+DT_SYNC --> DT_STATE
+DT_SYNC --> DT_ENV
+
+end
+
+%% =======================
+%% CONNECTIONS
+%% =======================
+
+CAR --> PER
+LOG --> CORE
+CTRL --> API
+SUP --> API
+CTRL -->|Actuation| CAR
+
+CAR --> DT_SYNC
+PER --> DT_SYNC
+CTRL --> DT_SYNC
+SUP --> DT_SYNC
+DT_SYNC --> SUP

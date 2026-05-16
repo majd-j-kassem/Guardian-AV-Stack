@@ -1,0 +1,69 @@
+flowchart TD
+
+%% =======================
+%% MOTION PLANNING ROOT
+%% =======================
+PLAN["Motion Planning Subsystem"]
+
+%% =======================
+%% PLANNING LEVELS
+%% =======================
+MP["Mission Planner (Global Routing)"]
+BP["Behavior Planner (Decision Making)"]
+LP["Local Planner (Trajectory Generation)"]
+
+PLAN --> MP
+PLAN --> BP
+PLAN --> LP
+
+%% =======================
+%% MISSION PLANNING
+%% =======================
+subgraph MISSION["Mission Planning Layer"]
+    MP_IN["Current Position + Destination (Road Network)"]
+    MP_PROC["Route Optimization (Global Path Search)"]
+    MP_OUT["Global Route Plan"]
+    
+    MP_IN --> MP_PROC --> MP_OUT
+end
+
+MP --> MISSION
+
+%% =======================
+%% BEHAVIOR PLANNING
+%% =======================
+subgraph BEHAVIOR["Behavior Planning Layer"]
+    BP_IN["Global Route + Perceived Dynamic Agents"]
+    BP_DEC["Behavior Decision Logic (Lane Change, Merge, Follow)"]
+    BP_CONS["Safety & Temporal Constraints"]
+
+    BP_OUT["High-Level Maneuver Commands"]
+
+    BP_IN --> BP_DEC --> BP_CONS --> BP_OUT
+end
+
+BP --> BEHAVIOR
+
+%% =======================
+%% LOCAL PLANNING
+%% =======================
+subgraph LOCAL["Local Planning Layer"]
+    LP_IN["Behavior Constraints + Occupancy Grid + Vehicle Limits"]
+    LP_GEN["Trajectory Optimization (Smooth + Feasible Path)"]
+    LP_OUT["Time-Parameterized Trajectory"]
+
+    LP_IN --> LP_GEN --> LP_OUT
+end
+
+LP --> LOCAL
+
+%% =======================
+%% INTER-LAYER FLOW
+%% =======================
+MP_OUT --> BP_IN
+BP_OUT --> LP_IN
+
+%% =======================
+%% OUTPUT TO CONTROL
+%% =======================
+LP_OUT --> CTRL["Vehicle Control Subsystem (C++ / Eigen)"]

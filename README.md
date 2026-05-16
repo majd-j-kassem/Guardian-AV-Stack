@@ -1,12 +1,60 @@
-# Guardian-AV-Stack: A Modular Prototyping Architecture for Autonomous Vehicle Subsystems
+# Guardian-AV-Stack
 
-Guardian-AV-Stack is an exploratory software framework designed to study the architectural separation between core autonomous driving modules and external monitoring interfaces using a containerized, Docker-based environment.
+An exploratory architecture for studying safety-oriented autonomous driving systems from a cyber-physical systems (CPS) perspective.
 
-The framework serves as a prototyping sandbox to evaluate data-flow consistency, subsystem modularity across standard autonomous vehicle pipelines, and basic automated testing workflows.
+This repository focuses on system-level design rather than full implementation, with emphasis on modular decomposition, runtime supervision, and the potential role of Digital Twin systems in validation and safety reasoning.
 
-## 🏗️ Architectural Layout
+---
 
-The layout isolates essential autonomous functions from external web connectivity by decoupling the system into distinct, independent services.
+## 🧭 Research Focus
+
+The project investigates how autonomous driving systems can be structured as integrated architectures rather than isolated modules, with particular attention to:
+
+- Safety-aware system design (not as an add-on, but as a core principle)
+- Hierarchical decomposition of perception, mapping, planning, and control
+- Runtime supervision and system monitoring
+- Integration of Digital Twin concepts for validation and anomaly detection
+
+---
+
+## 🏗️ System Overview
+
+The architecture is organized into four main layers:
+
+- **Sensing Layer**: Physical sensors and vehicle interface
+- **Autonomous Core**: Perception, mapping, planning, control, and supervision
+- **Telemetry Layer**: External monitoring and data interface
+- **Digital Twin Layer**: Parallel system for state mirroring and analysis
+
+---
+
+## 🧠 Key Concepts
+
+- Cyber-Physical System (CPS) design principles
+- Safety-critical supervision and override mechanisms
+- Modular autonomy stack decomposition
+- Closed-loop control architecture
+- Digital Twin as a runtime validation tool
+
+---
+
+## 📌 Status
+
+This is a conceptual research-oriented architecture.  
+No full production implementation is assumed; the focus is on structural design and system reasoning.
+
+---
+
+## 📄 Notes
+
+Diagrams and subsystem definitions are used to formalize architectural thinking for future research directions in autonomous systems and safety-critical robotics.
+
+---
+
+## 👤 Author
+
+Majd Kassem
+Systems Engineer | Robotics & Control Systems
 
 ```
        [ External Client / Web Dashboard ]
@@ -70,4 +118,4 @@ Guardian-AV-Stack/
 
 ## 📋 License
 
-This project is developed for academic research and prototyping purposes.
+This project is for academic research and prototyping purposes.

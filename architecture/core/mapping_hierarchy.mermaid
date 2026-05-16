@@ -1,0 +1,77 @@
+flowchart TD
+
+%% =======================
+%% MAPPING ROOT
+%% =======================
+MAP["Environment Mapping Subsystem"]
+
+%% =======================
+%% CORE MAP TYPES
+%% =======================
+OCC["Occupancy Grid Map"]
+LOC_MAP["Localization Map"]
+ROAD_MAP["Road / HD Map Representation"]
+
+MAP --> OCC
+MAP --> LOC_MAP
+MAP --> ROAD_MAP
+
+%% =======================
+%% OCCUPANCY GRID PIPELINE
+%% =======================
+subgraph OCC_PIPE["Occupancy Grid Pipeline (Collision Awareness)"]
+    OCC_IN["LiDAR Input"]
+    OCC_FILT["Dynamic Object Removal + Ground Filtering"]
+    OCC_GRID["Grid Construction"]
+    OCC_PROB["Probabilistic Occupancy Estimation"]
+
+    OCC_IN --> OCC_FILT --> OCC_GRID --> OCC_PROB
+end
+
+OCC --> OCC_PIPE
+
+%% =======================
+%% LOCALIZATION MAP PIPELINE
+%% =======================
+subgraph LOC_PIPE["Localization Map Pipeline (State Consistency)"]
+    LOC_IN["LiDAR + Camera Measurements"]
+    LOC_COMP["Map Comparison Engine"]
+    LOC_MOTION["Relative Motion Estimation"]
+    LOC_OUT["Refined Ego-State Update"]
+
+    LOC_IN --> LOC_COMP --> LOC_MOTION --> LOC_OUT
+end
+
+LOC_MAP --> LOC_PIPE
+
+%% =======================
+%% ROAD MAP PIPELINE
+%% =======================
+subgraph ROAD_PIPE["Road Map Pipeline (Planning Support)"]
+    HD_IN["HD Map Data"]
+    FUSE["Fusion with Static Perception"]
+    EXTRACT["Semantic Road Features"]
+    PLAN_REF["Navigation-Ready Map Output"]
+
+    HD_IN --> FUSE --> EXTRACT --> PLAN_REF
+end
+
+ROAD_MAP --> ROAD_PIPE
+
+%% =======================
+%% INTERACTION WITH PERCEPTION
+%% =======================
+P_STATIC["Perception - Static Scene Data"]
+P_PRED["Perception - Prediction Module"]
+
+P_STATIC --> ROAD_MAP
+ROAD_MAP --> P_PRED
+
+P_PRED --> DYN_EST["Dynamic Behavior Refinement"]
+
+%% =======================
+%% FEEDBACK TO LOCALIZATION
+%% =======================
+LOC_OUT --> MAP
+OCC_PROB --> MAP
+PLAN_REF --> MAP
