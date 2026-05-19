@@ -1,0 +1,16 @@
+flowchart TD
+
+UI["External Client"]
+
+API["Telemetry Gateway"]
+
+SUP["System Supervisor"]
+
+CORE["Autonomous Driving Core"]
+
+SENS["Sensing Layer"]
+CAR["Vehicle Platform 🚗"]
+
+UI --> API --> SUP --> CORE
+CAR --> SENS --> CORE
+CORE --> API

@@ -1,0 +1,72 @@
+flowchart TD
+
+%% =======================
+%% PERCEPTION ROOT
+%% =======================
+PER["Environment Perception Subsystem"]
+
+%% =======================
+%% L1 - FUNCTIONAL SPLIT
+%% =======================
+LOC["Ego-Vehicle Localization"]
+ENV["Environmental Processing"]
+
+PER --> LOC
+PER --> ENV
+
+%% =======================
+%% L2 - LOCALIZATION PIPELINE
+%% =======================
+subgraph LOC_PIPE["Localization Pipeline (State Estimation)"]
+
+    LOC_IN["Sensors: GPS / IMU / Odometry / LiDAR / Camera"]
+    LOC_OUT["Estimated 3D Vehicle State"]
+
+    LOC_IN --> LOC_OUT
+end
+
+LOC --> LOC_PIPE
+
+%% =======================
+%% L2 - ENVIRONMENT PIPELINE
+%% =======================
+subgraph ENV_PIPE["Environment Understanding Pipeline"]
+
+    DYN["Dynamic Object Detection"]
+    STA["Static Scene Understanding"]
+
+    ENV --> DYN
+    ENV --> STA
+
+    %% =======================
+    %% DYNAMIC PIPELINE
+    %% =======================
+    subgraph DYN_PIPE["Dynamic Object Pipeline"]
+        DYN_IN["Camera + LiDAR Streams"]
+        DET["3D Detection (BBox: class, pose, size)"]
+        TRK["Multi-Object Tracking"]
+        PRD["Motion Prediction"]
+
+        DYN_IN --> DET --> TRK --> PRD
+    end
+
+    %% =======================
+    %% STATIC PIPELINE
+    %% =======================
+    subgraph STA_PIPE["Static Scene Pipeline"]
+        STA_IN["Camera + LiDAR Streams"]
+        FEAT["Lane + Sign + Road Element Extraction"]
+
+        STA_IN --> FEAT
+    end
+
+    DYN --> DYN_PIPE
+    STA --> STA_PIPE
+end
+
+%% =======================
+%% OUTPUT TO HIGHER SYSTEM
+%% =======================
+LOC_OUT --> PER
+PRD --> PER
+FEAT --> PER

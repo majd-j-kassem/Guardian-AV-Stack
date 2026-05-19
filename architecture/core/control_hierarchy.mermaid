@@ -1,0 +1,64 @@
+flowchart TD
+
+%% =======================
+%% CONTROL ROOT
+%% =======================
+CTRL["Vehicle Control Subsystem (C++ / Eigen)"]
+
+%% =======================
+%% MAIN BLOCKS
+%% =======================
+ERR["Error Computation (Kinematic Tracking)"]
+ACT["Actuation Control (Command Generation)"]
+
+CTRL --> ERR
+CTRL --> ACT
+
+%% =======================
+%% ERROR COMPUTATION
+%% =======================
+subgraph ERROR_BLOCK["Kinematic Error Estimation"]
+    TRAJ["Input: Planned Trajectory"]
+    STATE["Input: Estimated Vehicle State"]
+
+    ERR_COMP["Compute Tracking Error Vector"]
+
+    LAT["Lateral Error (Cross-Track)"]
+    LON["Longitudinal Error (Along-Track / Speed)"]
+
+    TRAJ --> ERR_COMP
+    STATE --> ERR_COMP
+
+    ERR_COMP --> LAT
+    ERR_COMP --> LON
+end
+
+ERR --> ERROR_BLOCK
+
+%% =======================
+%% CONTROL EXECUTION
+%% =======================
+subgraph CONTROL_BLOCK["Feedback Control Laws"]
+
+    LAT_CTRL["Lateral Controller (Stanley / Pure Pursuit)"]
+    LON_CTRL["Longitudinal Controller (PID / MPC)"]
+
+    STEER["Steering Command"]
+    THROTTLE["Throttle Command"]
+    BRAKE["Brake Command"]
+
+    LAT --> LAT_CTRL --> STEER
+    LON --> LON_CTRL --> THROTTLE
+    LON_CTRL --> BRAKE
+end
+
+ACT --> CONTROL_BLOCK
+
+%% =======================
+%% ACTUATION OUTPUT
+%% =======================
+VEH["Vehicle Actuation Interface"]
+
+STEER --> VEH
+THROTTLE --> VEH
+BRAKE --> VEH

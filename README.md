@@ -1,73 +1,63 @@
-# Guardian-AV-Stack: A Modular Prototyping Architecture for Autonomous Vehicle Subsystems
+# Guardian-AV-Stack
 
-Guardian-AV-Stack is an exploratory software framework designed to study the architectural separation between core autonomous driving modules and external monitoring interfaces using a containerized, Docker-based environment.
+An exploratory research architecture for studying safety-oriented autonomous driving systems from a cyber-physical systems (CPS) perspective.
 
-The framework serves as a prototyping sandbox to evaluate data-flow consistency, subsystem modularity across standard autonomous vehicle pipelines, and basic automated testing workflows.
+This repository focuses on early-stage system design and architectural reasoning rather than full implementation. The goal is to investigate how autonomy stacks can be structured to explicitly consider safety, uncertainty, and runtime observability.
 
-## 🏗️ Architectural Layout
+---
 
-The layout isolates essential autonomous functions from external web connectivity by decoupling the system into distinct, independent services.
+## 🧭 Research Motivation
 
-```
-       [ External Client / Web Dashboard ]
-                       │
-                       ▼ (Asynchronous Telemetry & Data Logging)
-            ┌─────────────────────┐
-            │   FastAPI Gateway   │  <--- (Web Monitoring Interface)
-            └──────────┬──────────┘
-                       │
-  ─────────────────────┼─────────────────────────────────────────
-                       │  [ Isolated Docker Network Bridge ]
-                       ▼
-           ┌───────────────────────┐
-           │   System Supervisor   │ <─── Subsystem Monitoring Stub
-           └───────────┬───────────┘
-                       │
-       ┌───────────────┼───────────────┐
-       ▼               ▼               ▼
-┌────────────┐   ┌────────────┐   ┌────────────────────────┐
-│ Perception │──>│  Mapping   │──>│    Motion Planning     │
-│   (Stub)   │   │   (Stub)   │   │         (Stub)         │
-└────────────┘   └────────────┘   └───────────┬────────────┘
-                                              │
-                                              ▼ (Kinematic Trajectory Data)
-                                  ┌────────────────────────┐
-                                  │  Vehicle Control (C++) │ <─── Eigen Library
-                                  └────────────────────────┘
-```
+Modern autonomous driving systems are typically developed as loosely coupled modules. This project explores an alternative perspective: treating autonomy as a unified, safety-aware system architecture.
 
-## 🛠️ Subsystem Modularity Reference
+Key questions include:
+- How can safety be integrated as a structural design principle rather than an external constraint?
+- How should perception, planning, and control interact under uncertainty?
+- What role can runtime supervision play in system-level reliability?
+- How can Digital Twin concepts support validation and monitoring?
 
-The framework aligns its component boundaries with standard autonomous vehicle processing pipelines to analyze integration interfaces:
+---
 
-1. **Environment Perception (Stub):** Simulates sensory processing inputs for dynamic object identification and localization.
-2. **Environment Mapping (Stub):** Represents localized map layouts, handling occupancy grid placeholders and coordinate references.
-3. **Motion Planning (Stub):** Mimics the routing pipeline required to compute localized target path arrays.
-4. **Vehicle Control:** A native **C++** implementation utilizing the **Eigen** library to execute foundational kinematic calculations and local trajectory tracking.
-5. **System Supervisor:** An independent software monitoring block designed to study subsystem frequency consistency and log module-level output states.
+## 🏗️ Architectural Overview
 
-## 🚀 Testing & Integration Workflow
+The system is decomposed into four conceptual layers:
 
-To maintain code structure and compilation validity during architectural iterations, the repository integrates:
-* **Environment Isolation:** Container orchestration via `docker-compose` to enforce component-level dependency separation.
-* **Continuous Integration:** A basic automated pipeline managed through **GitHub Actions** to check compilation on updates.
-* **Unit Verification:** Functional mathematical validation blocks implemented via the **GTest (Google Test)** framework within the C++ control module.
+- **Sensing Layer**: Representation of physical sensing inputs
+- **Autonomy Core**: Perception, mapping, planning, and control logic (partially modeled)
+- **Supervision Layer**: Runtime monitoring and system-level observability
+- **Digital Twin Layer**: Conceptual parallel model for analysis and validation
+
+---
+
+## 🧠 Key Research Concepts
+
+- Cyber-Physical System (CPS) architectural design
+- Safety-aware system decomposition
+- Runtime supervision and observability
+- Modular autonomy stack reasoning
+- Digital Twin as a conceptual validation tool
+
+---
+
+## ⚙️ Implementation Scope
+
+## Current implementation is limited to early-stage prototypes and architectural experiments; most components are not fully integrated.
+
+This repository includes:
+- Partial prototype components (C++ / Python)
+- System design diagrams and architectural notes
+- Experimental supervision and control logic
+
+It does not represent a complete or validated autonomous driving system.
+
+---
 
 ## 📂 Repository Structure
 
 ```text
 Guardian-AV-Stack/
-├── .github/workflows/    # Automated GitHub Actions compilation workflows
-├── architecture/         # System design layouts and sequence diagrams
-├── docs/                 # Research notes, kinematic equations, and log files
-├── src/
-│   ├── vehicle_control/  # Trajectory tracking logic using C++ and Eigen
-│   ├── system_supervisor/# Module state auditing and monitoring node
-│   └── web_gateway/      # Telemetry bridge built with Python and FastAPI
-├── test/                 # Component-level verification suites (GTest)
-└── docker-compose.yml    # Container networking and isolation configuration
-```
-
-## 📋 License
-
-This project is developed for academic research and prototyping purposes.
+├── architecture/     # System design diagrams and conceptual models
+├── docs/             # Research notes and technical explanations
+├── src/              # Prototype components (C++ / Python)
+├── tests/            # Basic validation experiments
+└── docker-compose.yml (experimental setup for modular execution)
