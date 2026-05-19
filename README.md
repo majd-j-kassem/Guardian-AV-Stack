@@ -33,16 +33,17 @@ The architecture is structured into four conceptual layers:
 - Safety-critical supervision and override mechanisms
 - Modular autonomy stack decomposition
 - Closed-loop control architecture
-- Multi-objective decision-making under uncertainty
+- Multi-objective optimization for decision-making under uncertainty
 - Digital Twin as a runtime validation tool
-
 ---
 
 ## 📌 Status
 
-This is a conceptual, research-oriented architecture.  
-No full system implementation is assumed; the focus is on system-level design, structural reasoning, and exploratory modeling of autonomous driving architectures.
+This is a conceptual, research-oriented architecture.
 
+No full system implementation is assumed. The focus is on system-level design, structural reasoning, and exploratory modeling of autonomous driving architectures.
+
+System-level design artifacts are provided in the architecture folder.
 ---
 
 ## 📄 Notes
@@ -50,36 +51,6 @@ No full system implementation is assumed; the focus is on system-level design, s
 System diagrams and subsystem definitions are used to formalize architectural reasoning and support future research directions in autonomous systems and safety-critical robotics.
 ---
 
-## 👤 Author
-
-Majd Kassem
-Systems Engineer | Robotics & Control Systems
-       [ External Interface / Monitoring Concept ]
-                       │
-                       ▼
-            ┌─────────────────────┐
-            │  Communication Layer │
-            │  (Conceptual Gateway)│
-            └──────────┬──────────┘
-                       │
-                       ▼
-           ┌───────────────────────┐
-           │   System Supervisor   │
-           │ (Observability Model) │
-           └──────────┬──────────┘
-                       │
-       ┌───────────────┼───────────────┐
-       ▼               ▼               ▼
-┌────────────┐   ┌────────────┐   ┌────────────────────┐
-│ Perception │   │  Mapping   │   │   Planning / Control│
-│  (Model)   │   │  (Model)   │   │      (Model)       │
-└────────────┘   └────────────┘   └───────────┬────────┘
-                                              │
-                                              ▼
-                                  ┌────────────────────┐
-                                  │ Control Interface   │
-                                  │ (Conceptual C++)    │
-                                  └────────────────────┘
 
 ## 🛠️ Subsystem Modularity Reference
 
