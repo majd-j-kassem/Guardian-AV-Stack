@@ -2,62 +2,116 @@
 
 An exploratory research architecture for studying safety-oriented autonomous driving systems from a cyber-physical systems (CPS) perspective.
 
-This repository focuses on early-stage system design and architectural reasoning rather than full implementation. The goal is to investigate how autonomy stacks can be structured to explicitly consider safety, uncertainty, and runtime observability.
+This repository focuses on early-stage system-level design rather than full implementation, with emphasis on modular decomposition, runtime supervision, and the role of Digital Twin concepts in system validation and safety analysis.
 
 ---
 
-## 🧭 Research Motivation
+## 🧭 Research Focus
 
-Modern autonomous driving systems are typically developed as loosely coupled modules. This project explores an alternative perspective: treating autonomy as a unified, safety-aware system architecture.
+The project investigates autonomous driving systems as integrated architectures rather than isolated modules, with emphasis on:
 
-Key questions include:
-- How can safety be integrated as a structural design principle rather than an external constraint?
-- How should perception, planning, and control interact under uncertainty?
-- What role can runtime supervision play in system-level reliability?
-- How can Digital Twin concepts support validation and monitoring?
+- Safety-aware system design as a core architectural principle rather than an external constraint
+- Hierarchical decomposition of perception, mapping, planning, and control functions
+- Runtime supervision and system-level monitoring for observability and reliability
+- Integration of Digital Twin concepts for system validation and anomaly detection
+---
+
+## 🏗️ System Overview
+
+The architecture is structured into four conceptual layers:
+
+- **Sensing Layer**: Physical sensing components and vehicle interface abstraction
+- **Autonomy Core**: Perception, mapping, planning, control, and supervisory functions
+- **Telemetry Layer**: External communication, monitoring, and data exchange interfaces
+- **Digital Twin Layer**: Parallel system representation for state estimation, analysis, and validation
 
 ---
 
-## 🏗️ Architectural Overview
+## 🧠 Key Concepts
 
-The system is decomposed into four conceptual layers:
-
-- **Sensing Layer**: Representation of physical sensing inputs
-- **Autonomy Core**: Perception, mapping, planning, and control logic (partially modeled)
-- **Supervision Layer**: Runtime monitoring and system-level observability
-- **Digital Twin Layer**: Conceptual parallel model for analysis and validation
-
----
-
-## 🧠 Key Research Concepts
-
-- Cyber-Physical System (CPS) architectural design
-- Safety-aware system decomposition
-- Runtime supervision and observability
-- Modular autonomy stack reasoning
-- Digital Twin as a conceptual validation tool
+- Cyber-Physical System (CPS) design principles
+- Safety-critical supervision and override mechanisms
+- Modular autonomy stack decomposition
+- Closed-loop control architecture
+- Multi-objective decision-making under uncertainty
+- Digital Twin as a runtime validation tool
 
 ---
 
-## ⚙️ Implementation Scope
+## 📌 Status
 
-## Current implementation is limited to early-stage prototypes and architectural experiments; most components are not fully integrated.
-
-This repository includes:
-- Partial prototype components (C++ / Python)
-- System design diagrams and architectural notes
-- Experimental supervision and control logic
-
-It does not represent a complete or validated autonomous driving system.
+This is a conceptual, research-oriented architecture.  
+No full system implementation is assumed; the focus is on system-level design, structural reasoning, and exploratory modeling of autonomous driving architectures.
 
 ---
+
+## 📄 Notes
+
+System diagrams and subsystem definitions are used to formalize architectural reasoning and support future research directions in autonomous systems and safety-critical robotics.
+---
+
+## 👤 Author
+
+Majd Kassem
+Systems Engineer | Robotics & Control Systems
+       [ External Interface / Monitoring Concept ]
+                       │
+                       ▼
+            ┌─────────────────────┐
+            │  Communication Layer │
+            │  (Conceptual Gateway)│
+            └──────────┬──────────┘
+                       │
+                       ▼
+           ┌───────────────────────┐
+           │   System Supervisor   │
+           │ (Observability Model) │
+           └──────────┬──────────┘
+                       │
+       ┌───────────────┼───────────────┐
+       ▼               ▼               ▼
+┌────────────┐   ┌────────────┐   ┌────────────────────┐
+│ Perception │   │  Mapping   │   │   Planning / Control│
+│  (Model)   │   │  (Model)   │   │      (Model)       │
+└────────────┘   └────────────┘   └───────────┬────────┘
+                                              │
+                                              ▼
+                                  ┌────────────────────┐
+                                  │ Control Interface   │
+                                  │ (Conceptual C++)    │
+                                  └────────────────────┘
+
+## 🛠️ Subsystem Modularity Reference
+
+The framework defines subsystem boundaries aligned with standard autonomous vehicle processing pipelines to study integration interfaces and system-level interactions:
+
+1. **Environment Perception (Model):** Abstract representation of sensory processing for object identification and localization under uncertainty.
+2. **Environment Mapping (Model):** Conceptual representation of spatial mapping structures and coordinate space abstraction.
+3. **Motion Planning (Model):** High-level representation of trajectory generation and decision logic.
+4. **Vehicle Control:** Conceptual control module representing kinematic execution and control law behavior.
+5. **System Supervisor:** Independent monitoring component for studying timing consistency, observability, and subsystem-level state reporting.
+
+## 🚀 Testing & Integration Workflow
+
+To support structural consistency and experimental reproducibility during architectural iterations, the repository includes lightweight validation and development tooling:
+
+- **Environment Isolation:** Container-based setup for separating experimental components and dependencies.
+- **Continuous Integration (Experimental):** Basic automated checks using GitHub Actions to validate repository integrity.
+- **Unit-Level Validation:** Minimal verification routines inspired by testing principles (e.g., GTest structure in C++ components) for conceptual consistency.
 
 ## 📂 Repository Structure
 
-```text
 Guardian-AV-Stack/
-├── architecture/     # System design diagrams and conceptual models
-├── docs/             # Research notes and technical explanations
-├── src/              # Prototype components (C++ / Python)
-├── tests/            # Basic validation experiments
-└── docker-compose.yml (experimental setup for modular execution)
+├── .github/workflows/    # Experimental CI configuration
+├── architecture/         # System design diagrams and conceptual models
+├── docs/                 # Research notes and system-level reasoning
+├── src/
+│   ├── vehicle_control/  # Conceptual control module (C++)
+│   ├── system_supervisor/# Observability and monitoring model
+│   └── web_gateway/      # Optional interface layer (experimental)
+├── test/                 # Lightweight validation experiments
+└── docker-compose.yml    # Experimental environment configuration
+
+## 📋 License
+
+This project is for academic research and prototyping purposes.
